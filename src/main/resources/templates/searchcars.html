@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	layout:decorator="layout">
+<head>
+<meta charset="ISO-8859-1">
+<title>Book Car!</title>
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link
+	href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/css/bootstrap-datepicker3.css" />
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<style>
+body {
+	font-family: 'Roboto Condensed', sans-serif;
+}
+html {
+  position: relative;
+  min-height: 100%;
+}
+</style>
+</head>
+<body>
+	<div class="col-10">
+		<div class="row">
+			<nav class="navbar navbar-expand navbar-light bg-light">
+				<a class="navbar-brand" href="/"> &nbsp &nbsp BookCars.com</a>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="nav justify-content-end">
+						<li class="nav-item"><a class="nav-link" href="./bookacar">Book
+								a Car</a></li>
+						<li class="nav-item"><a class="nav-link" href="./mybookings">My
+								Bookings</a></li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_ADMIN')"><a
+							class="nav-link" href="./manageroles">Manage Roles</a></li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_VENDOR')">
+							<a class="nav-link" href="./managefleet">Manage Fleet</a>
+						</li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_VENDOR')">
+							<a class="nav-link" href="./viewrevies">View reviews</a>
+						</li>
+						<li class="nav-item" sec:authorize="hasRole('ROLE_VENDOR')">
+							<a class="nav-link" href="./addcar">Add car</a>
+						</li>
+						<li class="nav-item my-2 my-lg-0 mr-sm-2"
+							sec:authorize="!isAuthenticated()"><a class="nav-link"
+							href="./login">Login</a></li>
+						<li class="nav-item my-2 my-lg-0 mr-sm-2"
+							sec:authorize="isAuthenticated()"><a class="nav-link"
+							href="./logout">Logout</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-1"></div>
+			<div class="col-10">
+				<form th:action="@{/bookacar}" method="post"
+					th:object="${bookingRequestDTO}">
+					<div class="form-row">
+						<div class="col-02">
+							<div class="form-control form-group row">
+								<label for="noOfPassanersid">Passengers</label> <input
+									type="number" class="form-control" id="noOfPassanersid"
+									required="required"
+									th:field="${bookingRequestDTO.noOfPassaners}">
+							</div>
+						</div>
+						<div class="col-03">
+							<div class="form-control form-group row">
+								<label for="carType">Car Type</label> <select
+									class="form-control" id="carType" placeholder="Car Type"
+									required="required" th:field="${bookingRequestDTO.carType}">
+									<option value="Sedan">Sedan</option>
+									<option value="Hatchback">Hatchback</option>
+									<option value="SUV">SUV</option>
+									<option value="CampVan">CampVan</option>
+									<option value="SpaceBack">SpaceBack</option>
+									<option value="Truck">Truck</option>
+								</select>
+							</div>
+						</div>
+						<div class="col-02">
+							<div class="form-control form-group row">
+								<label for="fromDatedate">From Date</label>
+								<div class="input-group date" data-provide="datepicker">
+									<input type="text" class="form-control" id="fromDatedate"
+										placeholder="MM/DD/YYY" required="required" name="fromdate"
+										th:field="${bookingRequestDTO.fromDate}" autocomplete="off">
+									<div class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="col-02">
+							<div class="form-control form-group row">
+								<label for="toDatedate">To Date</label>
+								<div class="input-group date" data-provide="datepicker">
+									<input type="text" class="form-control" id="toDatedate"
+										placeholder="MM/DD/YYY" required="required" name="todate"
+										th:field="${bookingRequestDTO.toDate}" autocomplete="off">
+									<div class="input-group-addon">
+										<span class="glyphicon glyphicon-calendar"></span>
+									</div>
+								</div>
+							</div> 
+							
+						</div>
+						<div class="col-02">
+							<div class="form-group">
+								<button type="submit" class="btn btn-outline-primary">Search
+									Cars</button>
+							</div>
+						</div>
+					</div>
+				</form>
+				<div class="col-05 alert alert-danger" th:if="${noresult}">No
+					cars available for the search conditions !</div>
+				<div class="col-05 alert alert-danger" th:if="${errorInp}">
+					<a th:text="${errormsg}"></a>
+				</div>
+				<table class="table" th:if="${resultfound}">
+					<thead>
+						<tr>
+							<th scope="col">Brand</th>
+							<th scope="col">Model</th>
+							<th scope="col">Fuel</th>
+							<th scope="col">Mileage</th>
+							<th scope="col">Daily Rent</th>
+							<th scope="col">Book</th>
+						</tr>
+					</thead>
+					<tbody>
+						<th:block
+							th:each="SearchResult : ${bookingRequestDTO.searchResult}">
+							<tr>
+								<td th:text="${SearchResult.brand}"></td>
+								<td th:text="${SearchResult.model}"></td>
+								<td th:text="${SearchResult.fuel}"></td>
+								<td th:text="${SearchResult.avgMileage}"></td>
+								<td th:text="${SearchResult.rentPerDay}"></td>
+								<td><a th:href="${SearchResult.bookingLink}"
+									class="btn btn-outline-primary" role="button"
+									aria-pressed="true">Book Car</a></td>
+							</tr>
+						</th:block>
+					</tbody>
+				</table>
+			</div>
+			<div class="col-3"></div>
+		</div>
+	</div>
+	<div class="container" th:if="${showspace}">
+	<br><br><br><br><br><br><br><br><br><br>
+	</div>
+</body>
+<script type="text/javascript"
+	src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+
+<!-- Isolated Version of Bootstrap, not needed if your site already uses Bootstrap -->
+<link rel="stylesheet"
+	href="https://formden.com/static/cdn/bootstrap-iso.css" />
+
+<!-- Bootstrap Date-Picker Plugin -->
+<script type="text/javascript"
+	src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.4.1/js/bootstrap-datepicker.min.js"></script>
+
+
+<script>
+	$(document).ready(function() {
+		var date_input = $('input[name="name="todate""]'); //our date input has the name "date"
+		var date_input1 = $('input[name="name="fromdate""]');
+		var container = $('form').length > 0 ? $('form').parent() : "body";
+		date_input.datepicker({
+			format : 'mm/dd/yyyy',
+			container : container,
+			todayHighlight : true,
+			orientation : "bottom right",
+			autoclose : true,
+		})
+		date_input1.datepicker({
+			format : 'mm/dd/yyyy',
+			container : container,
+			todayHighlight : true,
+			orientation : "bottom right",
+			autoclose : true,
+		})
+	})
+</script>
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--  jQuery -->
+</html>

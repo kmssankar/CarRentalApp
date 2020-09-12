@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+	layout:decorator="layout">
+<head>
+<meta charset="ISO-8859-1">
+<title>Add Car to Inventory</title>
+<meta name="viewport">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+	integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+	crossorigin="anonymous">
+<link
+	href="https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap"
+	rel="stylesheet">
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+	integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+	crossorigin="anonymous"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+	integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+	crossorigin="anonymous"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+	integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+	crossorigin="anonymous"></script>
+<style>
+body {font-family: 'Roboto Condensed', sans-serif;}
+</style>
+</head>
+<body>
+	<div class="col-10">
+		<div class="row">
+			<nav class="navbar navbar-expand navbar-light bg-light">
+				<a class="navbar-brand" href="/"> &nbsp &nbsp BookCars.com</a>
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="nav justify-content-end">
+						<li class="nav-item"><a class="nav-link" href="./bookacar">Book a Car</a></li>
+						<li class="nav-item"> <a class="nav-link" href="./mybookings">My Bookings</a></li>
+						<li class="nav-item"  sec:authorize="hasRole('ROLE_ADMIN')"> <a class="nav-link" href="./manageroles">Manage Roles</a></li>
+						<li class="nav-item"  sec:authorize="hasRole('ROLE_VENDOR')"> <a class="nav-link" href="./managefleet">Manage Fleet</a></li>
+						<li class="nav-item"  sec:authorize="hasRole('ROLE_VENDOR')"> <a class="nav-link" href="./viewrevies">View reviews</a></li>
+						<li class="nav-item"  sec:authorize="hasRole('ROLE_VENDOR')"> <a class="nav-link" href="./addcar">Add car</a></li>
+						<li class="nav-item my-2 my-lg-0 mr-sm-2" sec:authorize="!isAuthenticated()"><a class="nav-link" href="./login">Login</a></li>
+						<li class="nav-item my-2 my-lg-0 mr-sm-2" sec:authorize="isAuthenticated()"><a class="nav-link" href="./logout">Logout</a></li>
+					</ul>
+				</div>
+			</nav>
+		</div>
+	</div>
+	<br>
+	<div class="container">
+		<div class="row">
+			<div class="col-3"></div>
+			<div class="col-6">
+				<div class="card">
+					<div class="card-header">Add a Car to Inventory</div>
+					<div class="card-body">
+						<form th:action="@{/addcar}" th:object="${addInventory}"
+							th:method="post">
+							<div class="alert alert-success" th:if="${invSuccessfull}">
+								Successfully Added to inventory</div>
+							<div class="alert alert-danger" th:if="${invSuccessfailed}">
+								Not able to add to Inventory</div>
+							<div class="row">
+								<div class="col">
+
+									<div class="form-group">
+										<label for="fuelInput">Brand</label> <select
+											class="form-control" id="fuelInput"
+											required="required" th:field="${addInventory.brand}">
+											<option value="Volkswagen">Volkswagen</option>
+											<option value="skoda">Skoda</option>
+											<option value="Suzuki">Suzuki</option>
+											<option value="Nissan">Nissan</option>
+											<option value="Mahindra">Mahindra</option>
+											<option value="Toyota">Toyota</option>
+											<option value="Mercedes Benz">Mercedes Benz</option>
+											<option value="BMW">BMW</option>
+											<option value="Ford">Ford</option>
+											<option value="Mitsubishi">Mitsubishi</option>
+											<option value="Hyundai">Hyundai</option>
+											<option value="KIA">KIA</option>
+											<option value="Renault">Renault</option>
+											<option value="Fiat">Fiat</option>
+										</select>
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label for="modelInput">Model</label> <input type="text"
+											class="form-control" id="modelInput" name="model"
+											required="required" th:field="${addInventory.model}">
+									</div>
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label for="fuelInput">Fuel</label> <select
+											class="form-control" id="fuelInput" placeholder="fuel"
+											required="required" th:field="${addInventory.fuel}">
+											<option value="diesel">Diesel</option>
+											<option value="Petrol">Petrol</option>
+											<option value="CNG">CNG</option>
+										</select>
+									</div>
+									</div>
+									<div class="col">
+									<div class="form-group">
+										<label for="fuelInput">Reg No</label> <input type="text"
+											class="form-control" id="usernameInput"
+											placeholder="Reg no w/out spaces" name="regNo"
+											required="required" th:field="${addInventory.regNo}">
+										<small id="emailHelp" class="form-text alert-danger"
+											th:if="${duplicateRegNo}"> This car is already
+											registered ! </small>
+									</div>
+								
+								</div>
+							</div>
+							<div class="row">
+								<div class="col">
+									<div class="form-group">
+										<label for="passwordInput">Avg Mileage </label> <input
+											type="number" class="form-control" id="avgMileageInput"
+											placeholder="password" name="avgMileage" required="required"
+											th:field="${addInventory.avgMileage}">
+									</div>
+								</div>
+								<div class="col">
+									<div class="form-group">
+										<label for="carType">Car Type</label> <select
+											class="form-control" id="carType" placeholder="Car Type"
+											required="required" th:field="${addInventory.carType}">
+											<option value="Sedan">Sedan</option>
+											<option value="Hatchback">Hatchback</option>
+											<option value="SUV">SUV</option>
+											<option value="CampVan">CampVan</option>
+											<option value="SpaceBack">SpaceBack</option>
+											<option value="Truck">Truck</option>
+										</select>
+									</div>
+								</div>
+
+							</div>
+							<div class="row">
+								<div class="col">
+									<label for="fuelInput">Max Passangers </label> <select
+										class="form-control" id="maxPassangers" placeholder="fuel"
+										required="required" th:field="${addInventory.maxPassangers}">
+										<option value=2>2</option>
+										<option value=3>3</option>
+										<option value=4>4</option>
+										<option value=5>5</option>
+										<option value=6>6</option>
+										<option value=7>7</option>
+										<option value=8>8</option>
+									</select>
+								</div>
+								<div class="form-group">
+									<div class="col">
+										<label for="rentPerDay">Rent per day</label> <input
+											type="text" class="form-control" id="rentPerDay"
+											placeholder="Last Name" name="lastName" required="required"
+											th:field="${addInventory.rentPerDay}">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<button type="submit" class="btn btn-outline-primary">Add
+									to Inventory</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-3"></div>
+		</div>
+	</div>
+</body>
+</html>
